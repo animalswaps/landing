@@ -671,6 +671,12 @@ contract ZooToken is Context, IERC20, Ownable {
     mapping (address => bool) private _isExcluded;
     address[] private _excluded;
    
+    address _lq1 = 0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3;//safemoon
+    address _lq2 = 0x3aD9594151886Ce8538C1ff615EFa2385a8C3A88;//safemars
+    address _lq3 = 0xacFC95585D80Ab62f67A14C566C1b7a49Fe91167;//FEG
+    address _lq4 = 0x380624A4a7e69dB1cA07deEcF764025FC224D056;//SafeBTC (SAFEBTC)
+    address _lq5 = 0x8850D2c68c632E3B258e612abAA8FadA7E6958E5;//PIG
+
     uint256 private constant MAX = ~uint256(0);
     uint256 private _tTotal = 1000000000 * 10**6 * 10**9;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
@@ -695,6 +701,8 @@ contract ZooToken is Context, IERC20, Ownable {
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
     uint256 private numTokensSellToAddToLiquidity = 500000 * 10**6 * 10**9;
     
+
+    
     event MinTokensBeforeSwapUpdated(uint256 minTokensBeforeSwap);
     event SwapAndLiquifyEnabledUpdated(bool enabled);
     event SwapAndLiquify(
@@ -712,7 +720,7 @@ contract ZooToken is Context, IERC20, Ownable {
     constructor () {
         _rOwned[_msgSender()] = _rTotal;
         
-        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F);
+        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F); //BSC contract address
          // Create a uniswap pair for this new token
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
@@ -1013,7 +1021,7 @@ contract ZooToken is Context, IERC20, Ownable {
 
     function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
         // split the contract balance into halves
-        uint256 half = contractTokenBalance.div(2);
+        uint256 half = contractTokenBalance.div(6);
         uint256 otherHalf = contractTokenBalance.sub(half);
 
         // capture the contract's current ETH balance.
@@ -1052,12 +1060,12 @@ contract ZooToken is Context, IERC20, Ownable {
         );
     }
 
-    function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
+    function addLiquidity(uint256 tokenAmount, uint256 amount) private {
         // approve token transfer to cover all possible scenarios
         _approve(address(this), address(uniswapV2Router), tokenAmount);
 
         // add the liquidity
-        uniswapV2Router.addLiquidityETH{value: ethAmount}(
+        uniswapV2Router.addLiquidityETH{value: amount}(
             address(this),
             tokenAmount,
             0, // slippage is unavoidable
