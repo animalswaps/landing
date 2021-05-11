@@ -658,7 +658,7 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
 }
 
 
-contract PigToken is Context, IERC20, Ownable {
+contract ZooToken is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -676,8 +676,8 @@ contract PigToken is Context, IERC20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = "Pig Token";
-    string private _symbol = "PIG";
+    string private _name = "Zoo Token";
+    string private _symbol = "ZOO";
     uint8 private _decimals = 9;
     
     uint256 public _taxFee = 2;
